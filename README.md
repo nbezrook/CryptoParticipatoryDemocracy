@@ -26,6 +26,28 @@ Use the supply scenarios and sliders to rerun the model. Open **Random seed & nu
 - **Export CSV:** one row per round, for plotting or analysis elsewhere.
 - **Print article:** a manuscript layout with figures, equations, references, the numerical appendix, and the current experiment parameters; interactive controls are omitted from the printed document.
 
+## Publish with GitHub Pages
+
+The app is entirely client-side. The included GitHub Actions workflow tests the model, builds the static site, and deploys it on pushes to `main` or when run manually.
+
+One-time repository setup:
+
+1. Open [Settings → Pages](https://github.com/nbezrook/CryptoParticipatoryDemocracy/settings/pages).
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Open [Actions → Deploy to GitHub Pages](https://github.com/nbezrook/CryptoParticipatoryDemocracy/actions/workflows/pages.yml), select **Run workflow**, and run it on `main`.
+4. After deployment succeeds, visit **https://nbezrook.github.io/CryptoParticipatoryDemocracy/**. GitHub's Pages settings and the workflow deployment show the actual URL, including any custom domain you configure.
+
+The site uses relative asset and module paths, so it works under the repository's project path as well as at a domain root. No API keys or hosted backend are required. Future pushes to `main` redeploy automatically once Pages is configured. If an initial run fails because Pages was not enabled, enable it and rerun the workflow.
+
+Build and inspect the static output locally:
+
+```sh
+npm run build
+python -m http.server 3001 --directory dist
+```
+
+`dist/` is generated and replaced by each build; do not store hand-edited files there. Only the browser assets and model module are included in the deployment artifact. To run the optional browser checks against this static server, set `SIMULATION_URL` to its address before running `python scripts/browser-smoke.py`.
+
 ## Reproduce and test an experiment
 
 ```sh
@@ -73,7 +95,9 @@ Convergence can also result from smaller consumption proposals as indicative pri
 src/model.js                  Deterministic planning engine and CSV export
 public/                       Dashboard, styles, and browser interactions
 scripts/server.mjs            Dependency-free static development server
+scripts/build.mjs             GitHub Pages static site build
 scripts/simulate.mjs           Command-line experiments
+.github/workflows/pages.yml    Automated GitHub Pages deployment
 test/model.test.js             Behavioral and reproducibility tests
 docs/model.md                 Equations, units, and assumptions
 docs/research-roadmap.md       Research questions and proposed extensions

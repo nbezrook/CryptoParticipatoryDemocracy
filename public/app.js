@@ -1,4 +1,4 @@
-import { simulate, toCSV, DEFAULT_CONFIG, MODEL_VERSION } from '/src/model.js';
+import { simulate, toCSV, DEFAULT_CONFIG, MODEL_VERSION } from './src/model.js';
 
 const $ = id => document.getElementById(id);
 const colors = ['#365e85', '#b87333', '#487768', '#8d668b'];
