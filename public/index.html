@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f7f3">
+  <meta name="description" content="An interactive working paper on participatory planning, resource constraints, and consumption in a cooperative federation.">
+  <title>Participatory planning in a cooperative federation · Common Ground</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23f8f7f3'/%3E%3Ctext x='7' y='30' font-family='Georgia' font-size='30' fill='%23212831'%3EΣ%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main class="paper">
+    <header class="masthead">
+      <a href="/" class="publication-name">Common Ground</a>
+      <span>COMPUTATIONAL ECONOMICS · RESEARCH PROTOTYPE</span>
+    </header>
+    <article aria-labelledby="page-title">
+      <header class="article-header">
+        <p class="document-type">Interactive working paper <span>№ 001</span></p>
+        <h1 id="page-title">Participatory planning in a<br class="title-break"> cooperative federation</h1>
+        <p class="subtitle">Resource constraints, iterative coordination, and the limits of feasibility</p>
+        <div class="article-meta"><span>A reproducible simulation study</span><span>Model <span id="model-version">1.0.0</span></span><span>6 councils · 120 members · 3 cooperatives</span></div>
+      </header>
+      <section class="abstract prose" aria-labelledby="abstract-title">
+        <h2 id="abstract-title">Abstract</h2>
+        <p>We examine a simplified, one-period model of participatory economic planning. Consumer councils submit budget-constrained proposals for vegetables, bread, and electricity. Indicative prices respond to scarce resources, while a separate proportional allocation rule enforces physical capacity limits. The interactive experiment below illustrates how supply disruptions affect proposal revision, consumption, and convergence. A feasible plan may emerge through reduced consumption; convergence alone does not establish that basic needs are met.</p>
+        <p class="keywords"><strong>Keywords:</strong> participatory planning; cooperative economies; resource allocation; reproducible simulation</p>
+      </section>
+      <nav class="article-nav" aria-label="Article sections"><a href="#model">1. Model</a><a href="#experiment">2. Experiment</a><a href="#results">3. Results</a><a href="#discussion">4. Discussion</a><a href="#references">References</a></nav>
+      <section id="model" class="article-section" aria-labelledby="model-title">
+        <div class="section-heading"><span class="section-number">01</span><h2 id="model-title">Model and allocation procedure</h2></div>
+        <div class="model-layout">
+          <div class="prose">
+            <p>The federation contains a farm, a bakery, an energy cooperative, and six consumer councils. Fixed production recipes connect final goods to four resource constraints: farm labor, bakery labor, shared electricity, and harvested grain. Each member receives an equal credit entitlement; seeded preference shares differ between councils.</p>
+            <p>The procedure draws on the idea of iterative proposal revision in participatory economics <a class="citation" href="#ref-1">[1, 2]</a>. It is a reduced model of resource accounting, rather than a complete implementation of its institutions.</p>
+          </div>
+          <figure class="model-figure">
+            <div id="federation-diagram"></div>
+            <figcaption><strong>Figure 1.</strong> Fixed production links. Solid arrows indicate vegetables, grain, and bread; dashed arrows indicate electricity. Quantities are determined by the model’s resource recipes.</figcaption>
+          </figure>
+        </div>
+        <div class="prose method-prose">
+          <p>For council <i>c</i> and good <i>g</i>, proposals follow Cobb–Douglas budget demand. The indicative price combines a fixed base cost with resource-specific scarcity premiums:</p>
+          <div class="equation" role="math" aria-label="Proposal equals budget times preference share divided by price. Price equals base cost plus the sum of recipe coefficients times scarcity premiums."><span><i>q</i><sub>cg</sub> = <span class="fraction"><span><i>B</i><sub>c</sub> <i>w</i><sub>cg</sub></span><span><i>p</i><sub>g</sub></span></span><span class="equation-gap"></span><i>p</i><sub>g</sub> = <i>b</i><sub>g</sub> + ∑<sub>r</sub> <i>a</i><sub>rg</sub> <i>λ</i><sub>r</sub></span><span class="equation-number">(1)</span></div>
+          <p>Here, <i>B</i> is the credit budget, <i>w</i> the preference share, <i>a</i> the resource requirement, and <i>λ</i> a nonnegative scarcity premium. Premiums rise when a resource is overrequested and fall when capacity is underused. At every round, proposals are scaled by a common factor to produce a feasible provisional allocation:</p>
+          <div class="equation" role="math" aria-label="Allocation factor is the minimum of one and every resource's capacity divided by its requested quantity. Allocated goods equal the factor times proposed goods."><span><i>α</i> = min (1, min<sub>r</sub> <span class="fraction"><span><i>K</i><sub>r</sub></span><span><i>D</i><sub>r</sub></span></span>)<span class="equation-gap"></span><i>x</i><sub>cg</sub> = <i>α q</i><sub>cg</sub></span><span class="equation-number">(2)</span></div>
+          <p class="method-note"><strong>Stopping criterion.</strong> Here, <i>K</i><sub>r</sub> is resource capacity and <i>D</i><sub>r</sub> total requested use. Convergence requires excess resource demand and the active scarcity-premium residuals to be within 0.8%. Proportional rationing enforces feasibility independently of this criterion.</p>
+        </div>
+      </section>
+      <section id="experiment" class="article-section experiment-section" aria-labelledby="experiment-title">
+        <div class="section-heading"><span class="section-number">02</span><h2 id="experiment-title">Experimental setup</h2><span class="section-aside">Interactive parameters</span></div>
+        <p class="section-intro">Select a supply scenario and vary the parameters. Every change recomputes the experiment; the same configuration reproduces the same run.</p>
+        <form id="controls">
+          <fieldset class="scenario-options"><legend>Supply scenario</legend><div class="scenario-grid">
+            <label class="scenario-card"><input type="radio" name="scenario" value="baseline" checked><span><strong>Steady state</strong><small>Baseline resource capacities</small></span></label>
+            <label class="scenario-card"><input type="radio" name="scenario" value="energy"><span><strong>Energy shortfall</strong><small>Reduced shared electricity</small></span></label>
+            <label class="scenario-card"><input type="radio" name="scenario" value="harvest"><span><strong>Harvest disruption</strong><small>Reduced farm capacity and grain</small></span></label>
+          </div></fieldset>
+          <div class="control-block" id="shock-control"><label for="shock">Supply reduction <output id="shock-value" for="shock">30%</output></label><input id="shock" type="range" min="0" max="80" value="30" step="5"><p id="shock-help">Select a disruption to apply a supply reduction.</p></div>
+          <div class="control-block"><label for="credits">Credits per member <output id="credits-value" for="credits">9</output></label><input id="credits" type="range" min="3" max="18" value="9" step="0.5"><div class="range-labels"><span>3 credits</span><span>18 credits</span></div></div>
+          <div class="control-block"><label for="rounds">Maximum planning rounds <output id="rounds-value" for="rounds">160</output></label><input id="rounds" type="range" min="20" max="320" value="160" step="20"><div class="range-labels"><span>20 updates</span><span>320 updates</span></div></div>
+          <details class="advanced"><summary>Random seed & numerical parameters <span data-icon="chevron"></span></summary><div class="advanced-fields"><div><label for="seed">Random seed</label><input id="seed" type="number" min="0" max="4294967295" step="1" value="42"><p>The seed determines council preference shares.</p></div><div><label for="rate">Price adjustment rate <output id="rate-value" for="rate">1.2</output></label><input id="rate" type="range" min="0.2" max="3" step="0.1" value="1.2"><p>The update rate controls the scarcity-feedback step.</p></div></div></details>
+          <button type="button" class="reset-button" id="reset"><span data-icon="reset"></span> Restore default parameters</button>
+          <p id="error" role="alert" hidden></p>
+        </form>
+        <p id="experiment-summary" class="experiment-summary"></p>
+      </section>
+      <section id="results" class="article-section" aria-labelledby="results-title">
+        <div class="section-heading"><span class="section-number">03</span><h2 id="results-title">Results</h2><div class="data-actions"><button id="import" class="button quiet">Import run</button><button id="export" class="button">Export run</button><button id="print" class="button quiet">Print article</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
+        <div class="run-heading"><div><span>Scenario:</span><strong id="scenario-label">Steady state</strong><span class="seed-badge" id="seed-label">SEED 42</span></div><p id="run-status" role="status">Preparing simulation…</p></div>
+        <section class="metrics" aria-label="Selected round metrics" id="metrics"></section>
+        <figure class="results-figure">
+          <div class="planning-grid">
+            <section class="panel trajectory-panel" aria-labelledby="trajectory-title"><div class="panel-heading"><h3 id="trajectory-title"><span class="panel-letter">A</span> Proposal revision</h3><span class="panel-badge" id="round-badge">ROUND 0</span></div><p class="panel-description">Requested resource use / available capacity (%)</p><div class="chart-legend" id="chart-legend"></div><div id="trajectory-chart" class="trajectory-chart"></div><div class="axis-caption">Planning round</div><div class="timeline"><button class="play-button" id="play" aria-label="Play planning rounds"><span data-icon="play"></span></button><div class="timeline-slider"><label class="visually-hidden" for="timeline">Selected planning round</label><input id="timeline" type="range" min="0" max="1" value="0"><div class="range-labels"><span>Initial proposals</span><span id="timeline-end">Final plan</span></div></div><button class="button small quiet" id="final-round">Final round <span data-icon="arrow"></span></button></div></section>
+            <section class="panel resource-panel" aria-labelledby="resources-title"><div class="panel-heading"><h3 id="resources-title"><span class="panel-letter">B</span> Resource balance</h3></div><div id="resource-list"></div><div class="allocation-note" id="allocation-note"></div><div class="price-heading"><span>Indicative prices</span><span>credits / unit</span></div><div id="price-list"></div></section>
+          </div>
+          <figcaption><strong>Figure 2.</strong> Proposal revision and allocation at the selected round. <strong>(A)</strong> Requested resources approach physical limits as indicative prices change; the dashed horizontal line denotes capacity. Faint segments show later rounds. Bakery labor and grain harvest curves coincide under baseline capacities. <strong>(B)</strong> Proposals and feasible allocations are reported separately. Residual rationing may remain within the convergence tolerance.</figcaption>
+        </figure>
+        <section class="council-panel" aria-labelledby="councils-title"><div class="table-heading"><h3 id="councils-title"><strong>Table 1.</strong> Allocated consumption by council</h3><button class="button small quiet" id="csv">Export CSV <span data-icon="download"></span></button></div><p class="panel-description">Selected planning round; equal credit entitlements per member.</p><div class="table-scroll"><table><thead><tr><th scope="col">Consumer council</th><th scope="col">Vegetables<small>baskets</small></th><th scope="col">Bread<small>loaves</small></th><th scope="col">Electricity<small>kWh</small></th><th scope="col">Basket index<span class="help-dot" title="Cobb–Douglas quantity index relative to this council's unallocated round-zero proposal. Not a measure of basic needs met.">?</span></th></tr></thead><tbody id="council-rows"></tbody></table></div><p class="table-note"><strong>Note.</strong> The basket index is a preference-weighted quantity index relative to each council’s unallocated initial proposal. It does not measure basic needs met. <span id="credit-note"></span></p></section>
+      </section>
+      <section id="discussion" class="article-section" aria-labelledby="discussion-title"><div class="section-heading"><span class="section-number">04</span><h2 id="discussion-title">Discussion and limitations</h2></div><div class="prose"><p><strong>Feasibility and consumption.</strong> Higher indicative prices can reduce proposals until the resource constraints are satisfied. The allocation and initial-basket indices must therefore be interpreted alongside convergence: resource balance alone is not a welfare result.</p><p><strong>Institutional scope.</strong> The model assumes fixed production recipes, divisible goods, truthful capacity reports, and fixed preferences. It excludes inventories, investment, strategic reporting, council voting, and need-based entitlements. Computational planning has a wider theoretical literature <a class="citation" href="#ref-3">[3, 4]</a>; this experiment evaluates a limited numerical procedure.</p><p><strong>Further work.</strong> Existing planning prototypes and distributed resource vocabularies provide useful precedents <a class="citation" href="#ref-5">[5, 6]</a>. Extensions could compare rationing rules, model uncertain production, and test verifiable resource commitments. Cryptographic proofs and private budgets are not implemented in this study.</p></div></section>
+      <details class="model-notes"><summary><strong>Appendix A.</strong> Update rule and reproducibility <span data-icon="chevron"></span></summary><div class="model-notes-content prose"><p>Scarcity premiums are initialized at zero and updated after each recorded round using a projected feedback step:</p><div class="equation" role="math" aria-label="The next scarcity premium is the maximum of zero and the current premium plus the adjustment rate times utilization minus one."><span><i>λ</i><sub>r</sub><sup>t+1</sup> = max (0, <i>λ</i><sub>r</sub><sup>t</sup> + <i>η</i> (<i>D</i><sub>r</sub><sup>t</sup> / <i>K</i><sub>r</sub> − 1))</span><span class="equation-number">(A1)</span></div><p>For resources with a positive premium, the residual is the absolute deviation from full utilization; otherwise, it is excess demand only. The process stops when the maximum residual is at most 0.008 or the update limit is reached. Round zero precedes the first update.</p><p>JSON exports include the model version, configuration, capacities, preferences, and all round snapshots. Import recomputes the experiment from its configuration. CSV exports contain one row per recorded round. The source includes reproducibility, capacity, budget, and convergence checks.</p></div></details>
+      <section id="references" class="article-section references" aria-labelledby="references-title"><div class="section-heading"><h2 id="references-title">References and software precedents</h2></div><ol><li id="ref-1">Albert, M., & Hahnel, R. (1991). <cite>The Political Economy of Participatory Economics.</cite></li><li id="ref-2">Hahnel, R. (2021). <cite>Democratic Economic Planning.</cite></li><li id="ref-3">Cockshott, W. P., & Cottrell, A. (1993). <cite>Towards a New Socialism.</cite></li><li id="ref-4">Saros, D. E. (2014). <cite>Information Technology and Socialist Construction.</cite></li><li id="ref-5"><a href="https://github.com/msszczep/pequod-plus">pequod-plus.</a> Participatory planning procedure prototype [software].</li><li id="ref-6"><a href="https://github.com/valueflows/valueflows">ValueFlows.</a> Economic resource, process, commitment, and event vocabulary [specification].</li></ol><p class="reference-note">Selected conceptual and software precedents; not a systematic literature review. This page presents an exploratory model, not peer-reviewed findings.</p></section>
+    </article>
+    <footer class="main-footer"><span>Common Ground · Cooperative Federation Lab</span><span>Interactive working paper · No. 001</span></footer>
+    <p class="toast" id="toast" role="status" hidden></p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "cooperative-federation-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A reproducible, visual simulation of cooperative economic planning",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node scripts/server.mjs",
+    "test": "node --test",
+    "simulate": "node scripts/simulate.mjs"
+  }
+}
